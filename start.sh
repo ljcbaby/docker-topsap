@@ -33,4 +33,9 @@ ip link set dev tun0 mtu 1300
 
 # 添加NAT转发，使其他请求可以走正常出口，不全部走代理，例如公网请求
 iptables -t nat -A POSTROUTING -o tun0 -j MASQUERADE
-tail -f /dev/null
+
+while sleep 5; do
+  if ip link show tun0 | grep -q "mtu 1500"; then
+    ip link set dev tun0 mtu 1300
+  fi
+done
