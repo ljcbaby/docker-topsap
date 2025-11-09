@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:bookworm-slim
 
 WORKDIR /home/work
 
@@ -12,26 +12,18 @@ ENV PASSWORD=""
 RUN export DEBIAN_FRONTEND=noninteractive && \
     ln -fs /usr/share/zoneinfo/Asia /etc/localtime && \
     apt-get update && \
-    apt-get -y --no-install-suggests --no-install-recommends install tzdata sudo curl dante-server iproute2 ca-certificates dnsutils vim iptables procps psmisc cron iputils-ping net-tools lsof traceroute mtr-tiny && \
+    apt-get -y --no-install-suggests --no-install-recommends install tzdata curl dante-server iproute2 ca-certificates iptables procps psmisc iputils-ping && \
     dpkg-reconfigure --frontend noninteractive tzdata && \
     echo Ubuntu >> /etc/issue && \
     apt-get install -y expect && \
-    if [ "$(uname -m)" = "x86_64" ]; then \
-        curl -o TopSAP-3.5.2.40.2-x86_64.deb -L https://app.topsec.com.cn/linux/general/x86_64/deb/TopSAP-3.5.2.40.2-x86_64.deb; \
-        dpkg -i TopSAP-3.5.2.40.2-x86_64.deb; \
-        rm TopSAP-3.5.2.40.2-x86_64.deb; \
-    else \
-        curl -o TopSAP-3.5.2.40.2-aarch64.deb -L https://app.topsec.com.cn/linux/general/aarch64/TopSAP-3.5.2.40.2-aarch64.deb; \
-        dpkg -i TopSAP-3.5.2.40.2-aarch64.deb; \
-        rm TopSAP-3.5.2.40.2-aarch64.deb; \
-    fi && \
+    curl -o TopSAP-3.5.2.40.2-x86_64.deb -L https://tk.ljcbaby.top/linux/general/x86_64/deb/TopSAP-3.5.2.40.2-x86_64.deb && \
+    dpkg -i TopSAP-3.5.2.40.2-x86_64.deb && \
+    rm TopSAP-3.5.2.40.2-x86_64.deb && \
     apt-get install -f -y && \
     rm -rf /var/lib/apt/lists/*
 
 COPY start.sh .
 COPY danted.conf /etc
 COPY expect.exp .
-
-EXPOSE 53/udp
 
 CMD /home/work/start.sh
