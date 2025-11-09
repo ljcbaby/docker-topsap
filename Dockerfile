@@ -12,7 +12,7 @@ ENV PASSWORD=""
 RUN export DEBIAN_FRONTEND=noninteractive && \
     ln -fs /usr/share/zoneinfo/Asia /etc/localtime && \
     apt-get update && \
-    apt-get -y --no-install-suggests --no-install-recommends install tzdata curl dante-server iproute2 ca-certificates iptables procps psmisc iputils-ping && \
+    apt-get -y --no-install-suggests --no-install-recommends install tzdata sudo curl dante-server iproute2 ca-certificates iptables procps psmisc iputils-ping && \
     dpkg-reconfigure --frontend noninteractive tzdata && \
     echo Ubuntu >> /etc/issue && \
     apt-get install -y expect && \
